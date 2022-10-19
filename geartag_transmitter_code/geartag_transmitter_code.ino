@@ -12,7 +12,7 @@ RF24 radio(9, 8);  // CE, CSN
 const byte address[6] = "00001";
 
 //text that will make up the ping
-const String ping = "here";
+const char ping[4] = "here";
 
 void setup() {
   //initialize the radio module
@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
   //ping the receiver
-  radio.write(&text, sizeof(text));
+  radio.write(&ping, sizeof(ping));
 
   //delay for 5 seconds
   delay(5000);
