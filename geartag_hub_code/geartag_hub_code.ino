@@ -20,6 +20,7 @@ const int beeps = 2;
 void setup() {
   //open the serial channel for debugging purposes
   Serial.begin(9600);
+  Serial.write("------");
 
   //initialize the transceiver
   radio.begin();
@@ -35,14 +36,17 @@ void setup() {
 }
 
 void loop() {
-  //read data if available in buffer
+//read data if available in buffer
   if(!radio.available()){
   //the buzzer goes off beeps number of times
     for(int i = 0; i < beeps; i++){
-      tone(buzzerPin, 1000);
-      delay(500);
-      noTone(buzzerPin);
+      analogWrite(buzzerPin, 1000);
     }
+  }else if(radio.available()){
+    String ping = "nothing";
+    uint8_t bytes = radio.getPayloadSize();
+    radio.read(&ping, bytes);
+    Serial.println(ping);
   }
   delay(1000);
 }

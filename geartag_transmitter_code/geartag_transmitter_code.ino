@@ -12,7 +12,7 @@ RF24 radio(9, 10);  // CE, CSN
 const byte address[6] = "00001";
 
 //text that will make up the ping
-const char ping[4] = "here";
+const String ping = "here";
 
 void setup() {
   //initialize the radio module
