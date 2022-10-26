@@ -1,11 +1,11 @@
 /*A class for listing attributes of different
 tags that might be connected to the main hub*/
 
-class Transmitter{
+class transmitter{
   private:
     int id;
   public:
-    Transmitter(int id) {
+    transmitter(int id) {
       this->id = id;
     }
 
