@@ -13,10 +13,10 @@
 Transmitter tag0(0);
 
 //instantiate transceiver object using pin 9 as CE and 10 as CSN
-RF24 hub(9, 10);
+RF24 radio(7, 8);
 
 //state the address
-const uint8_t address = "00001";
+const uint8_t* address = "00001";
 
 //create an array to store the separate transmitters' classes
 int timestamps[NUM_TRANSMITTERS];
@@ -27,10 +27,10 @@ bool alarming = false;
 //log the time when the most recent ping for each tag was recieved
 int logPings(){
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
-		if(hub.available()){
+		if(radio.available()){
 			int time = millis();
 			int ping;
-			hub.read(&ping, 1);
+			radio.read(&ping, 1);
 			if(tag0.getId() == ping){
 				timestamps[i] = time;
 			}
@@ -49,24 +49,28 @@ void checkTimes(){
 
 //beep the buzzer once
 void beep(){
-	digitalWrite(BPIN, 180);
-	delay(100);
-	digitalWrite(BPIN, 0);
+	analogWrite(BPIN, 1000);
+	delay(1000);
+	analogWrite(BPIN, 0);
+  delay(1000);
 }
 
 //debugging funcitons
-void checkhub(){
-	if(!hub.begin()){
-		Serial.print("hub not working");
+void checkRadio(){
+	if(!radio.begin()){
+		Serial.print("radio not working\n");
+	}else if(radio.begin()){
+    Serial.print("radio working\n");
 	}
 }
+
 void setup() {
-	Serial.begin(96000);
+	Serial.begin(9600);
 
-	checkhub();
+	checkRadio();
 
-	hub.openReadingPipe(0, address);
-	hub.startListening();
+	radio.openReadingPipe(0, address);
+	radio.startListening();
 }
 
 void loop() {
