@@ -33,13 +33,16 @@ int logPings(){
 			float payload = 99.0;
       uint8_t bytes = radio.getPayloadSize();
       radio.read(&payload, bytes);
+
+      int castedPayload = payload;
+      
       Serial.print(F("Received "));
       Serial.print(bytes);  // print the size of the payload
       Serial.print(F(" bytes on pipe "));
       Serial.print(pipe);  // print the pipe number
       Serial.print(F(": "));
       Serial.println(payload);  // print the payload's value
-			if(tag0.getId() == payload){
+			if(tag0.getId() == castedPayload){
 				timestamps[i] = time;
 			}
 		}
