@@ -6,14 +6,18 @@
 RF24 radio(7, 8);
 
 //define the id for this tag
-uint8_t id = 0;
+float id = 2;
 
 //state the address
 uint8_t address[][6] = { "hub01", "tag01", "tag02" };
 
 //send a ping
 void ping(){
-  radio.write(&id, sizeof(uint8_t));
+  bool written = radio.write(&id, sizeof(float));
+  Serial.println("pinging");
+  if(written){
+    Serial.println("recieved");
+  }
 }
 
 //debugging funcitons
@@ -36,4 +40,5 @@ void setup() {
 
 void loop() {
   ping();
+  delay(1000);
 }
