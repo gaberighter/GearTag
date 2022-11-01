@@ -26,14 +26,20 @@ bool alarming = false;
 
 //log the time when the most recent ping for each tag was recieved
 int logPings(){
+  uint8_t pipe;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
-		if(radio.available()){
-			int time = millis();
-			uint8_t ping;
+		if(radio.available(&pipe)){
+      int time = millis();
+			float payload = 99.0;
       uint8_t bytes = radio.getPayloadSize();
-			radio.read(&ping, bytes);
-      Serial.print(ping + "\n");
-			if(tag0.getId() == ping){
+      radio.read(&payload, bytes);
+      Serial.print(F("Received "));
+      Serial.print(bytes);  // print the size of the payload
+      Serial.print(F(" bytes on pipe "));
+      Serial.print(pipe);  // print the pipe number
+      Serial.print(F(": "));
+      Serial.println(payload);  // print the payload's value
+			if(tag0.getId() == payload){
 				timestamps[i] = time;
 			}
 		}
@@ -43,6 +49,8 @@ int logPings(){
 //check to see if a tag has not responded in a while
 void checkTimes(){
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
+    Serial.print("checking times: ");
+    Serial.print(i);
 		if(timestamps[i] < (millis() - 1000)){
 			alarming = true;
 		}
@@ -81,4 +89,5 @@ void loop() {
   }
   logPings();
   checkTimes();
+  
 }
