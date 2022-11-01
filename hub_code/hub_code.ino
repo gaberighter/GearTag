@@ -16,7 +16,7 @@ Transmitter tag0(0);
 RF24 radio(7, 8);
 
 //state the address
-const uint8_t* address = "00001";
+uint8_t address[][6] = { "hub01", "tag01", "tag02" };
 
 //create an array to store the separate transmitters' classes
 int timestamps[NUM_TRANSMITTERS];
@@ -29,8 +29,10 @@ int logPings(){
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
 		if(radio.available()){
 			int time = millis();
-			int ping;
-			radio.read(&ping, 1);
+			uint8_t ping;
+      uint8_t bytes = radio.getPayloadSize();
+			radio.read(&ping, bytes);
+      Serial.print(ping + "\n");
 			if(tag0.getId() == ping){
 				timestamps[i] = time;
 			}
@@ -69,7 +71,7 @@ void setup() {
 
 	checkRadio();
 
-	radio.openReadingPipe(0, address);
+	radio.openReadingPipe(0, address[0]);
 	radio.startListening();
 }
 

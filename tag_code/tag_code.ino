@@ -6,14 +6,14 @@
 RF24 radio(7, 8);
 
 //define the id for this tag
-byte id = 0;
+uint8_t id = 0;
 
 //state the address
-const uint8_t* address = "00001";
+uint8_t address[][6] = { "hub01", "tag01", "tag02" };
 
 //send a ping
 void ping(){
-  radio.write(id, 8);
+  radio.write(&id, sizeof(uint8_t));
 }
 
 //debugging funcitons
@@ -30,7 +30,7 @@ void setup() {
 
   checkRadio();
 
-  radio.openWritingPipe(address);
+  radio.openWritingPipe(address[0]);
   radio.stopListening();
 }
 

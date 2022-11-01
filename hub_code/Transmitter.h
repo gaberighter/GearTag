@@ -5,10 +5,10 @@ tags that might be connected to the main hub*/
 
 class Transmitter{
   private:
-    int id;
+    uint8_t id;
   public:
-    Transmitter(int id);
+    Transmitter(uint8_t id);
     
-    int getId();
-    void setId(int newId);
+    uint8_t getId();
+    void setId(uint8_t newId);
 };

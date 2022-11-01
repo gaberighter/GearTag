@@ -1,13 +1,13 @@
 #include "Transmitter.h"
 
-Transmitter::Transmitter(int id){
+Transmitter::Transmitter(uint8_t id){
   this->id = id;
 }
 
-int Transmitter::getId(){
+uint8_t Transmitter::getId(){
   return id;
 }
 
-void Transmitter::setId(int newId){
+void Transmitter::setId(uint8_t newId){
   id = newId;
 }
