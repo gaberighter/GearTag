@@ -6,7 +6,7 @@
 RF24 radio(7, 8);
 
 //define the id for this tag
-float id = 2;
+float id = 0.0;
 
 //state the address
 uint8_t address[][6] = { "hub01", "tag01", "tag02" };

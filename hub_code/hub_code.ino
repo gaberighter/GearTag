@@ -51,9 +51,11 @@ int logPings(){
 
 //check to see if a tag has not responded in a while
 void checkTimes(){
+  alarming = false;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
     Serial.print("checking times: ");
-    Serial.print(i);
+    Serial.println(i);
+    Serial.println(timestamps[i]);
 		if(timestamps[i] < (millis() - 1000)){
 			alarming = true;
 		}
@@ -72,6 +74,8 @@ void beep(){
 void checkRadio(){
 	if(!radio.begin()){
 		Serial.print("radio not working\n");
+    while(true){
+    }
 	}else if(radio.begin()){
     Serial.print("radio working\n");
 	}
@@ -87,10 +91,12 @@ void setup() {
 }
 
 void loop() {
-  if(alarming){
-    beep();
+  if(alarming = true){
+    analogWrite(BPIN, 1000);
+  }else{
+    analogWrite(BPIN, 0);
   }
   logPings();
   checkTimes();
-  
+  delay(1000);
 }
