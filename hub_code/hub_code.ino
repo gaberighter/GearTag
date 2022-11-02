@@ -29,21 +29,29 @@ int logPings(){
   uint8_t pipe;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
 		if(radio.available(&pipe)){
-      int time = millis();
+      int t = millis();
+      Serial.print("time is: ");
+      Serial.println(t);
 			float payload = 99.0;
       uint8_t bytes = radio.getPayloadSize();
       radio.read(&payload, bytes);
 
       int castedPayload = payload;
-      
+            
       Serial.print(F("Received "));
       Serial.print(bytes);  // print the size of the payload
       Serial.print(F(" bytes on pipe "));
       Serial.print(pipe);  // print the pipe number
       Serial.print(F(": "));
       Serial.println(payload);  // print the payload's value
+      Serial.print("casted to: ");
+      Serial.println(castedPayload);
+      Serial.print("comparing to: ");
+      Serial.println(tag0.getId());
 			if(tag0.getId() == castedPayload){
-				timestamps[i] = time;
+				timestamps[tag0.getId()] = millis();
+        Serial.println("set tag0 most recent time to: ");
+        Serial.println(timestamps[tag0.getId()]);
 			}
 		}
 	}
@@ -53,12 +61,13 @@ int logPings(){
 void checkTimes(){
   alarming = false;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
-    Serial.print("checking times: ");
-    Serial.println(i);
-    Serial.println(timestamps[i]);
-		if(timestamps[i] < (millis() - 1000)){
-			alarming = true;
-		}
+    if(millis() > 1500){
+		  if(timestamps[i] < (millis() - 1500)){
+			  alarming = 1;
+		  }else{
+        alarming = 0;
+		  }
+    }
 	}
 }
 
@@ -91,9 +100,10 @@ void setup() {
 }
 
 void loop() {
-  if(alarming = true){
+  Serial.println(alarming);
+  if(alarming == 1){
     analogWrite(BPIN, 1000);
-  }else{
+  }else if(alarming == 0){
     analogWrite(BPIN, 0);
   }
   logPings();
