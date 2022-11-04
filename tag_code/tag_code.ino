@@ -6,11 +6,7 @@
 RF24 radio(7, 8);
 
 //define the id for this tag
-<<<<<<< HEAD
 float id = 0;
-=======
-float id = 2.0;
->>>>>>> c9c080cb783160e39a06b3d4bfef5737da5558fc
 
 //state the address
 uint8_t address[][6] = { "hub01", "tag01", "tag02" };
@@ -44,5 +40,5 @@ void setup() {
 
 void loop() {
   ping();
-  delay(1000);
+  delay(100);
 }

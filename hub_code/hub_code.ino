@@ -30,28 +30,31 @@ int logPings(){
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
 		if(radio.available(&pipe)){
       int t = millis();
-      Serial.print("time is: ");
-      Serial.println(t);
+//      Serial.print("time is: ");
+  //    Serial.println(t);
 			float payload = 99.0;
       uint8_t bytes = radio.getPayloadSize();
       radio.read(&payload, bytes);
 
       int castedPayload = payload;
             
-      Serial.print(F("Received "));
-      Serial.print(bytes);  // print the size of the payload
-      Serial.print(F(" bytes on pipe "));
-      Serial.print(pipe);  // print the pipe number
-      Serial.print(F(": "));
-      Serial.println(payload);  // print the payload's value
-      Serial.print("casted to: ");
+ //     Serial.print(F("Received "));
+   //   Serial.print(bytes);  // print the size of the payload
+     // Serial.print(F(" bytes on pipe "));
+      //Serial.print(pipe);  // print the pipe number
+      //Serial.print(F(": "));
+      //Serial.println(payload);  // print the payload's value
+      //Serial.print("casted to: ");
+      Serial.print("Received ping from tag: ");
       Serial.println(castedPayload);
-      Serial.print("comparing to: ");
-      Serial.println(tag0.getId());
+      //Serial.print("comparing to: ");
+      //Serial.println(tag0.getId());
 			if(tag0.getId() == castedPayload){
 				timestamps[tag0.getId()] = millis();
-        Serial.println("set tag0 most recent time to: ");
-        Serial.println(timestamps[tag0.getId()]);
+        //Serial.println("set tag0 most recent time to: ");
+        //Serial.println(timestamps[tag0.getId()]);
+			}else{
+        Serial.println("Did not receive any pings");
 			}
 		}
 	}
@@ -100,12 +103,27 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(alarming);
+  //Serial.println(alarming);
   if(alarming == 1){
+    Serial.println("");
+    Serial.println("-----------------------ALARM ON------------------------");
+    Serial.println("");
     analogWrite(BPIN, 1000);
   }else if(alarming == 0){
+    Serial.println("");
+    Serial.println("-----------------------ALARM OFF-----------------------");
+    Serial.println("");
     analogWrite(BPIN, 0);
   }
+
+  //when added, the arduino restarts
+  int t = millis();
+  Serial.print("time: ");
+  Serial.println(t);
+  Serial.print("last: ");
+  Serial.println(timestamps[0]);
+
+  
   logPings();
   checkTimes();
   delay(1000);
