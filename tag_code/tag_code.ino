@@ -3,7 +3,7 @@
 #include "RF24.h"
 
 //instantiate transciever object using pin 9 as CE and 10 as CSN
-RF24 radio(7, 8);
+RF24 radio(6, 7);
 
 //define the id for this tag
 float id = 0;
@@ -31,7 +31,10 @@ void checkRadio(){
 
 void setup() {
   Serial.begin(9600);
-
+  
+  pinMode(3, OUTPUT);
+  digitalWrite(3, HIGH);
+  
   checkRadio();
 
   radio.openWritingPipe(address[0]);
