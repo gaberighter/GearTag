@@ -14,9 +14,9 @@ uint8_t address[][6] = { "hub01", "tag01", "tag02" };
 //send a ping
 void ping(){
   bool written = radio.write(&id, sizeof(float));
-  Serial.println("pinging");
+  //Serial.println("pinging");
   if(written){
-    Serial.println("recieved");
+    //Serial.println("recieved");
   }
 }
 
@@ -43,5 +43,6 @@ void setup() {
 
 void loop() {
   ping();
+  checkRadio();
   delay(100);
 }
