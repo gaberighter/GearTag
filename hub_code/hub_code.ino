@@ -19,7 +19,7 @@ RF24 radio(7, 8);
 uint8_t address[][6] = { "hub01", "tag01", "tag02" };
 
 //create an array to store the separate transmitters' classes
-int timestamps[NUM_TRANSMITTERS];
+unsigned long timestamps[NUM_TRANSMITTERS];
 
 //create a boolean to control whether or not the alarm is sounding
 bool alarming = false;
@@ -29,7 +29,7 @@ int logPings(){
   uint8_t pipe;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
 		if(radio.available(&pipe)){
-      int t = millis();
+      unsigned long t = millis();
 //      Serial.print("time is: ");
   //    Serial.println(t);
 			float payload = 99.0;
@@ -117,11 +117,13 @@ void loop() {
   }
 
   //when added, the arduino restarts
-  int t = millis();
-  Serial.print("time: ");
+  unsigned long  t = millis();
+  Serial.print("###########################\ntime: ");
+  delay(100);
   Serial.println(t);
-  Serial.print("last: ");
-  Serial.println(timestamps[0]);
+  Serial.print("\nlast: ");
+//  Serial.println(timestamps[0]);
+  Serial.print("###########################\n");
 
   
   logPings();
