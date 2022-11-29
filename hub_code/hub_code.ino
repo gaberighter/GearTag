@@ -9,6 +9,12 @@
 //define the number of transmitters
 #define NUM_TRANSMITTERS 1
 
+//define state change command
+float command = 0;
+
+//define list of states (true = on false = off)
+bool states[NUM_TRANSMITTERS];
+
 //instantiate transceiver objects
 Transmitter tag0(0);
 
@@ -23,6 +29,13 @@ unsigned long timestamps[NUM_TRANSMITTERS];
 
 //create a boolean to control whether or not the alarm is sounding
 bool alarming = false;
+
+//set all the states to 1
+void statesInit(){
+  for(int i = 0; i < NUM_TRANSMITTERS; i++){
+    states[i] = 1;
+  }
+}
 
 //log the time when the most recent ping for each tag was recieved
 int logPings(){
@@ -53,6 +66,10 @@ int logPings(){
 				timestamps[tag0.getId()] = millis();
         //Serial.println("set tag0 most recent time to: ");
         //Serial.println(timestamps[tag0.getId()]);
+			}else if(castedPayload/10 == 9){
+        if(castedPayload%10 == tag0.getId()){
+          states[tag0.getId()] = !states[tag0.getId()];
+        }
 			}else{
         Serial.println("Did not receive any pings");
 			}
