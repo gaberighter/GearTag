@@ -81,12 +81,14 @@ int logPings(){
 void checkTimes(){
   alarming = false;
 	for(int i = 0; i < NUM_TRANSMITTERS; i++){
-    if(millis() > 1500){
-		  if(timestamps[i] < (millis() - 1500)){
-			  alarming = 1;
-		  }else{
-        alarming = 0;
-		  }
+    if(states[i] == true){
+      if(millis() > 1500){
+		    if(timestamps[i] < (millis() - 1500)){
+			    alarming = 1;
+		    }else{
+          alarming = 0;
+		    }
+      }
     }
 	}
 }
